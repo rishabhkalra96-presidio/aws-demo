@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'sam-app-lambdas
+
+  Sample SAM Template for sam-app-lambdas
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  SAMCLIHelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SAMCLIHelloWorldFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Events:
+        SAMCLIHelloWorld:
+          Type: Api
+          Properties:
+            Path: /sam-cli-hello-world
+            Method: get
+Outputs:
+  SAMCLIHelloWorldApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/sam-cli-hello-world/
+  SAMCLIHelloWorldFunction:
+    Description: SAM CLI based lambda function created by rishabh kalra
+    Value:
+      Fn::GetAtt:
+      - SAMCLIHelloWorldFunction
+      - Arn
+  SAMCLIHelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function by rishabh kalra
+    Value:
+      Fn::GetAtt:
+      - SAMCLIHelloWorldFunctionRole
+      - Arn
