@@ -1,6 +1,12 @@
 // const axios = require('axios')
 // const url = 'http://checkip.amazonaws.com/';
-let response;
+const aws = require('aws-sdk');
+
+// async function getLoginCredentials(secretName) {
+//     let client = new aws.SecretsManager()
+//     let data = await client.getSecretValue({SecretId: secretName}).promise()
+//     return data;
+// }
 
 /**
  *
@@ -16,18 +22,33 @@ let response;
  */
 exports.lambdaHandler = async (event, context) => {
     try {
-        // const ret = await axios(url);
-        response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                message: 'hello world from sam cli deployment by rishabh kalra',
-                // location: ret.data.trim()
-            })
+        const bucketName = 'sam-cli-resource-bucket-by-rk'
+
+        aws.config.update({region: 'us-east-1'});
+        s3 = new aws.S3();
+        const result = await s3.getObject({Bucket: bucketName, Key: 'sample.json'}).promise()
+        if (result) {
+            let fileData;
+                if (Buffer.isBuffer(result.Body)) {
+                    fileData = JSON.parse(result.Body.toString())
+                } else {
+                    fileData = result.Body
+                }
+                return {
+                    'statusCode': 200,
+                    'body': {
+                        "fileName": 'sample.json',
+                        "contentType": result.ContentType,
+                        "lastUpdated": result.LastModified,
+                        "data": fileData
+                    },
+                }
+            }
+        return {
+            ok: false, message: 'An Error occured, check the logs', status: 500
         }
     } catch (err) {
         console.log(err);
         return err;
     }
-
-    return response
 };

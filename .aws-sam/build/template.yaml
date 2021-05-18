@@ -2,16 +2,35 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: 'sam-app-lambdas
 
-  Sample SAM Template for sam-app-lambdas
+  Sample SAM Template for sam-app-lambdas by rk
 
   '
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 10
 Resources:
+  DynamoDBByRk2:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      Tags:
+        rk: rk
+      PrimaryKey:
+        Name: id
+        Type: String
+      TableName: first-dynamo-table-by-rk-2
+  SAMS3BucketByRK:
+    Type: AWS::S3::Bucket
+    Properties:
+      Tags:
+      - Key: rk
+        Value: rk
+      BucketName: sam-cli-resource-bucket-by-rk-2
+      AccessControl: PublicReadWrite
   SAMCLIHelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Tags:
+        rk: rk
       CodeUri: SAMCLIHelloWorldFunction
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
@@ -21,6 +40,84 @@ Resources:
           Properties:
             Path: /sam-cli-hello-world
             Method: get
+  SAMCLIDynamoDBReadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Tags:
+        rk: rk
+      CodeUri: SAMCLIDynamoDBReadFunction
+      Handler: app.dynamoDBReadHandler
+      Runtime: nodejs14.x
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: DynamoDBByRk2
+      Events:
+        SAMCLIDynamoDBRead:
+          Type: Api
+          Properties:
+            Path: /sam-cli-dynamo-db-read
+            Method: get
+  SAMCLIDynamoDBCreateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Tags:
+        rk: rk
+      CodeUri: SAMCLIDynamoDBCreateFunction
+      Handler: app.dynamoDBCreateHandler
+      Runtime: nodejs14.x
+      Policies:
+      - DynamoDBWritePolicy:
+          TableName:
+            Ref: DynamoDBByRk2
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: DynamoDBByRk2
+      Events:
+        SAMCLIDynamoDBWrite:
+          Type: Api
+          Properties:
+            Path: /sam-cli-dynamo-db-create
+            Method: post
+  SAMCLIDynamoDBUpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Tags:
+        rk: rk
+      CodeUri: SAMCLIDynamoDBUpdateFunction
+      Handler: app.dynamoDBUpdateHandler
+      Runtime: nodejs14.x
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: DynamoDBByRk2
+      - DynamoDBWritePolicy:
+          TableName:
+            Ref: DynamoDBByRk2
+      Events:
+        SAMCLIDynamoDBUpdate:
+          Type: Api
+          Properties:
+            Path: /sam-cli-dynamo-db-update
+            Method: put
+  SAMCLIDynamoDBDeleteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Tags:
+        rk: rk
+      CodeUri: SAMCLIDynamoDBDeleteFunction
+      Handler: app.dynamoDBDeleteHandler
+      Runtime: nodejs14.x
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: DynamoDBByRk2
+      Events:
+        SAMCLIDynamoDBDelete:
+          Type: Api
+          Properties:
+            Path: /sam-cli-dynamo-db-delete
+            Method: delete
 Outputs:
   SAMCLIHelloWorldApi:
     Description: API Gateway endpoint URL for Prod stage for Hello World function

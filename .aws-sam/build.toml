@@ -8,4 +8,11 @@ source_md5 = ""
 packagetype = "Zip"
 functions = ["SAMCLIHelloWorldFunction"]
 
+[function_build_definitions.2dee9edc-526c-4b1a-b246-4b9be914bffb]
+codeuri = "/Users/rishabhkalra96/Documents/projects/sam-app-lambdas/dynamo-db"
+runtime = "nodejs14.x"
+source_md5 = ""
+packagetype = "Zip"
+functions = ["SAMCLIDynamoDBReadFunction", "SAMCLIDynamoDBCreateFunction", "SAMCLIDynamoDBUpdateFunction", "SAMCLIDynamoDBDeleteFunction"]
+
 [layer_build_definitions]
