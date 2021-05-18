@@ -1,19 +1,19 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   sam-app-lambdas
 
   Sample SAM Template for sam-app-lambdas by rk
-  
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 10  
+    Timeout: 10
 Resources:
   DynamoDBByRk2:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      Tags: 
+      Tags:
         rk: rk
       PrimaryKey:
         Name: id
@@ -22,15 +22,15 @@ Resources:
   SAMS3BucketByRK:
     Type: AWS::S3::Bucket
     Properties:
-      Tags: 
+      Tags:
         - Key: "rk"
           Value: "rk"
-      BucketName: 'sam-cli-resource-bucket-by-rk-2'
-      AccessControl: 'PublicReadWrite'
+      BucketName: "sam-cli-resource-bucket-by-rk-2"
+      AccessControl: "PublicReadWrite"
   SAMCLIHelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Tags: 
+      Tags:
         rk: rk
       CodeUri: hello-world/
       Handler: app.lambdaHandler
@@ -44,7 +44,7 @@ Resources:
   SAMCLIDynamoDBReadFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Tags: 
+      Tags:
         rk: rk
       CodeUri: dynamo-db/
       Handler: app.dynamoDBReadHandler
@@ -61,7 +61,7 @@ Resources:
   SAMCLIDynamoDBCreateFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Tags: 
+      Tags:
         rk: rk
       CodeUri: dynamo-db/
       Handler: app.dynamoDBCreateHandler
@@ -80,7 +80,7 @@ Resources:
   SAMCLIDynamoDBUpdateFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Tags: 
+      Tags:
         rk: rk
       CodeUri: dynamo-db/
       Handler: app.dynamoDBUpdateHandler
@@ -99,7 +99,7 @@ Resources:
   SAMCLIDynamoDBDeleteFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Tags: 
+      Tags:
         rk: rk
       CodeUri: dynamo-db/
       Handler: app.dynamoDBDeleteHandler
